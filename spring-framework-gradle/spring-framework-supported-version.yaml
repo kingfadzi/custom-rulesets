@@ -1,0 +1,18 @@
+- ruleID: "spring-framework-supported-version-gradle"
+  category: "informational"
+  effort: 1
+  labels:
+    - "cto.io/spring-framework-version=spring-framework-6.2+"
+    - "cto.io/spring-framework-version=spring-framework-supported"
+  when:
+    or:
+      - builtin.filecontent:
+          filePattern: all-deps-nodupes.txt
+          pattern: org\.springframework:spring-.*:6\.(2|[3-9]|\d{2,})(\.\d+)*(-SNAPSHOT)?
+
+  description: "Detected Spring Framework version 6.2.x or newer, which is supported."
+  message: |
+    Detected Spring Framework version 6.2.x or newer (including possible SNAPSHOT builds), which is supported.
+  links:
+    - title: "Spring Framework Release Notes"
+      url: "https://github.com/spring-projects/spring-framework/wiki"

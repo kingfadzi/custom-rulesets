@@ -1,0 +1,105 @@
+- ruleID: detect-maven-java-8
+  category: Mandatory
+  effort: 1
+  labels:
+    - cto.io/build-tool=maven
+    - cto.io/java-version=java-8
+  when:
+    builtin.xml:
+      filepaths:
+        - effective-pom.xml
+      namespaces:
+        m: "http://maven.apache.org/POM/4.0.0"
+      xpath: |
+        //m:properties/m:java.version[.='1.8'] |
+        //m:properties/m:maven.compiler.source[.='1.8'] |
+        //m:properties/m:maven.compiler.target[.='1.8'] |
+        //m:properties/m:maven.compiler.release[.='1.8']
+  description: "Detected the use of Java 8, which is no longer supported."
+  message: |
+    This Maven build is configured for Java 8.
+
+- ruleID: detect-maven-java-1.8-11
+  category: informational
+  effort: 1
+  labels:
+    - cto.io/source=maven
+    - cto.io/java-version=java-1.8-11
+  when:
+    builtin.xml:
+      filepaths:
+        - effective-pom.xml
+      namespaces:
+        m: "http://maven.apache.org/POM/4.0.0"
+      xpath: |
+        //m:properties/m:java.version[. > '1.8' and . < '11'] |
+        //m:properties/m:maven.compiler.source[. > '1.8' and . < '11'] |
+        //m:properties/m:maven.compiler.target[. > '1.8' and . < '11'] |
+        //m:properties/m:maven.compiler.release[. > '1.8' and . < '11']
+  description: "Detected usage of Java versions from 9 or 10 ."
+  message: |
+    This Maven build is configured for a Java version greater than 1.8 and less than 11.
+
+
+- ruleID: detect-maven-java-11
+  category: Mandatory
+  effort: 1
+  labels:
+    - cto.io/build-tool=maven
+    - cto.io/java-version=java-11
+  when:
+    builtin.xml:
+      filepaths:
+        - effective-pom.xml
+      namespaces:
+        m: "http://maven.apache.org/POM/4.0.0"
+      xpath: |
+        //m:properties/m:java.version[.='11'] |
+        //m:properties/m:maven.compiler.source[.='11'] |
+        //m:properties/m:maven.compiler.target[.='11'] |
+        //m:properties/m:maven.compiler.release[.='11']
+  description: "Detected usage of Java 11 consider upgrading."
+  message: |
+    This Maven build is configured for Java 11.
+
+- ruleID: detect-maven-java-17
+  category: informational
+  effort: 1
+  labels:
+    - cto.io/build-tool=maven
+    - cto.io/java-version=java-17
+  when:
+    builtin.xml:
+      filepaths:
+        - effective-pom.xml
+      namespaces:
+        m: "http://maven.apache.org/POM/4.0.0"
+      xpath: |
+        //m:properties/m:java.version[.='17'] |
+        //m:properties/m:maven.compiler.source[.='17'] |
+        //m:properties/m:maven.compiler.target[.='17'] |
+        //m:properties/m:maven.compiler.release[.='17']
+  description: "Detected usage of Java 17."
+  message: |
+    This Maven build is configured for Java 17.
+
+- ruleID: detect-maven-java-21
+  category: informational
+  effort: 1
+  labels:
+    - cto.io/build-tool=maven
+    - cto.io/java-version=java-21
+  when:
+    builtin.xml:
+      filepaths:
+        - effective-pom.xml
+      namespaces:
+        m: "http://maven.apache.org/POM/4.0.0"
+      xpath: |
+        //m:properties/m:java.version[.='21'] |
+        //m:properties/m:maven.compiler.source[.='21'] |
+        //m:properties/m:maven.compiler.target[.='21'] |
+        //m:properties/m:maven.compiler.release[.='21']
+  description: "Detected usage of Java 21"
+  message: |
+    This Maven build is configured for Java 21.

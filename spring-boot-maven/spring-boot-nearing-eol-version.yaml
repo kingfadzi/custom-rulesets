@@ -1,0 +1,33 @@
+- ruleID: "spring-boot-nearing-eol-version-maven"
+  category: "mandatory"
+  effort: 1
+  labels:
+    - "cto.io/spring-boot-version=spring-boot-2.5-2.6"
+    - "cto.io/spring-boot-status=spring-boot-nearing-eol"
+  when:
+    or:
+      # CASE A: Direct numeric version >= 2.5 and < 2.7
+      - builtin.xml:
+          filepaths:
+            - "effective-pom.xml"
+          namespaces:
+            m: "http://maven.apache.org/POM/4.0.0"
+          xpath: >
+            ( //m:dependencies[not(ancestor::m:dependencyManagement)]/m:dependency )[
+              m:groupId='org.springframework.boot'
+              and starts-with(m:artifactId, 'spring-boot-starter')
+              and (
+                number(substring-before(m:version, '.')) = 2
+                and (
+                  number(substring-before(substring-after(m:version, '.'), '.')) >= 5
+                  and number(substring-before(substring-after(m:version, '.'), '.')) < 7
+                )
+              )
+            ]
+
+  description: "Detected Spring Boot versions nearing end-of-life (2.5 ≤ version < 2.7)."
+  message: |
+    Detected Spring Boot version between 2.5.x and 2.7.0, which is nearing end-of-life. Consider upgrading to 2.7.x or later to stay on a supported track.
+  links:
+    - title: "Spring Boot Upgrade Guide"
+      url: "https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.7-Release-Notes"

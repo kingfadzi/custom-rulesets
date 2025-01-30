@@ -1,0 +1,34 @@
+- ruleID: "spring-framework-nearing-eol-version-maven"
+  category: "mandatory"
+  effort: 1
+  labels:
+    - "cto.io/spring-framework-version=spring-framework-6.1"
+    - "cto.io/spring-framework-status=spring-framework-nearing-eol"
+  when:
+    or:
+      # CASE A: Dependency with version 6.1.x
+      - builtin.xml:
+          filepaths:
+            - "effective-pom.xml"
+          namespaces:
+            m: "http://maven.apache.org/POM/4.0.0"
+          xpath: >    
+            ( //m:dependencies[not(ancestor::m:dependencyManagement)]/m:dependency )[
+              m:groupId='org.springframework'
+              and starts-with(m:artifactId, 'spring')
+              and (
+                number(substring-before(m:version, '.')) > 6
+                or (
+                  number(substring-before(m:version, '.')) = 6
+                  and number(substring-before(substring-after(m:version, '.'), '.')) >= 1
+                )
+              )
+            ]
+
+  description: "Detected Spring Framework version nearing end-of-life (6.1.x)."
+  message: |
+    Detected Spring Framework version 6.1.x (including possible SNAPSHOT builds), which is nearing end-of-life. 
+    Consider upgrading to 6.2 or later for ongoing support.
+  links:
+    - title: "Spring Framework End of Life Policy"
+      url: "https://spring.io/projects/spring-framework#support"

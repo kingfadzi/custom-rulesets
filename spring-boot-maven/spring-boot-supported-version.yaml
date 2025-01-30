@@ -1,0 +1,32 @@
+- ruleID: "spring-boot-supported-version-maven"
+  category: "informational"
+  effort: 1
+  labels:
+    - "cto.io/spring-boot-version=spring-boot-2.7+"
+    - "cto.io/spring-boot-status=spring-boot-supported"
+  when:
+    or:
+      # CASE A: Direct numeric version >= 2.7 in <dependency>
+      - builtin.xml:
+          filepaths:
+            - "effective-pom.xml"
+          namespaces:
+            m: "http://maven.apache.org/POM/4.0.0"
+          xpath: >
+            ( //m:dependencies[not(ancestor::m:dependencyManagement)]/m:dependency )[
+              m:groupId='org.springframework.boot'
+              and starts-with(m:artifactId, 'spring-boot-starter')
+              and (
+                number(substring-before(m:version, '.')) > 2
+                or (
+                  number(substring-before(m:version, '.')) = 2
+                  and number(substring-before(substring-after(m:version, '.'), '.')) >= 7
+                )
+              )
+            ]
+  description: "Detected supported Spring Boot version (>2.7)."
+  message: |
+    Detected Spring Boot version 2.7.x or newer, which is supported. No immediate action is required.
+  links:
+    - title: "Spring Boot Release Notes"
+      url: "https://github.com/spring-projects/spring-boot/wiki"

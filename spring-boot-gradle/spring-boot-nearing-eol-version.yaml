@@ -1,0 +1,18 @@
+- ruleID: "spring-boot-nearing-eol-version-gradle"
+  category: "mandatory"
+  effort: 1
+  labels:
+    - "cto.io/spring-boot-version=spring-boot-2.5-2.6"
+    - "cto.io/spring-boot-status=spring-boot-nearing-eol"
+  when:
+    or:
+      - builtin.filecontent:
+          filePattern: all-deps-nodupes.txt
+          pattern: org\.springframework\.boot:spring-boot-starter.*:2\.[5-6](\.\d+)?
+  description: "Detected Spring Boot versions nearing end-of-life (2.5 ≤ version < 2.7)."
+  message: |
+    Your project uses a Spring Boot version between 2.5.x and 2.6.x, which is nearing end-of-life. 
+    Consider upgrading to a supported version (e.g., 2.7.x or later).
+  links:
+    - title: "Spring Boot End of Life Policy"
+      url: "https://spring.io/projects/spring-boot#support"

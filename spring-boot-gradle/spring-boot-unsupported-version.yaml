@@ -1,0 +1,20 @@
+- ruleID: "spring-boot-unsupported-version-gradle"
+  category: "mandatory"
+  effort: 1
+  labels:
+    - "cto.io/spring-boot-version=spring-boot-before-2.5"
+    - "cto.io/spring-boot-status=spring-boot-deprecated"
+
+  when:
+    or:
+      - builtin.filecontent:
+          filePattern: all-deps-nodupes.txt
+          pattern: org\.springframework\.boot:spring-boot-starter.*:(1\.\d+(\.\d+)?|2\.[0-4](\.\d+)?)
+
+  description: "Detected unsupported Spring Boot version (< 2.5)."
+  message: |
+    Your project uses Spring Boot version < 2.5, which is unsupported. 
+    Consider upgrading to a supported version (e.g., 2.7.x or later).
+  links:
+    - title: "Spring Boot End of Life Policy"
+      url: "https://spring.io/projects/spring-boot#support"

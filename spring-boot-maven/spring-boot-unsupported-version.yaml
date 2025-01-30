@@ -1,0 +1,33 @@
+- ruleID: "spring-boot-unsupported-version-maven"
+  category: "mandatory"
+  effort: 1
+  labels:
+    - "cto.io/spring-boot-version=spring-boot-before-2.5"
+    - "cto.io/spring-boot-status=spring-boot-deprecated"
+  when:
+    or:
+      # CASE A: Direct numeric version < 2.5 in <dependency>
+      - builtin.xml:
+          filepaths:
+            - "effective-pom.xml"
+          namespaces:
+            m: "http://maven.apache.org/POM/4.0.0"
+          xpath: >
+            ( //m:dependencies[not(ancestor::m:dependencyManagement)]/m:dependency )[
+              m:groupId='org.springframework.boot'
+              and starts-with(m:artifactId, 'spring-boot-starter')
+              and (
+                number(substring-before(m:version, '.')) < 2
+                or (
+                  number(substring-before(m:version, '.')) = 2
+                  and number(substring-before(substring-after(m:version, '.'), '.')) < 5
+                )
+              )
+            ]
+
+  description: "Detected unsupported Spring Boot version (< 2.5)."
+  message: |
+    Detected Spring Boot version older than 2.5, which is unsupported. Upgrade to 2.5.x or later for critical patches and updates.
+  links:
+    - title: "Spring Boot Wiki"
+      url: "https://github.com/spring-projects/spring-boot/wiki"
